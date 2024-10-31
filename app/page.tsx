@@ -1,3 +1,4 @@
+"use client"
 import {
   Card,
   CardContent,
@@ -10,16 +11,28 @@ import {recipes,Recipes } from "@/data/datas"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { useEffect, useState } from "react"
+import Loadingss from "./loading"
 
 
 
 export default function Home() {
 
-  
+  const [Loading,setLoading]=useState(true)
+
+  useEffect(()=>{
+    setTimeout(()=>{
+      setLoading(false)
+    },1000)
+  },[])
 
   return (
     <main>
-      <div className="grid grid-cols-3 gap-8">
+      {Loading? (
+        <Loadingss />
+      ): (
+ 
+        <div className="grid grid-cols-3 gap-8">
         {recipes.map((recipe:Recipes)=>(
         <Card key={recipe.id} className="flex flex-col justify-between">
           <CardHeader className="flex-row gap-4 items-center">
@@ -28,8 +41,7 @@ export default function Home() {
             <AvatarImage src={`/${recipe.image}`} alt="recipe-img"/>
             <AvatarFallback>{recipe.title.slice(0,2)}</AvatarFallback>
           </Avatar>
-           
-
+          
             <div>
               <CardTitle>{recipe.title}</CardTitle>
               <CardDescription>{recipe.time} mins to cook</CardDescription>
@@ -48,6 +60,9 @@ export default function Home() {
 
         ))}
       </div>
+
+      )}
+     
     </main>
   );
 }
